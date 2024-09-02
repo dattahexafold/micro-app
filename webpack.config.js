@@ -13,7 +13,7 @@ module.exports = {
     port: 3001,
   },
   output: {
-    publicPath: './src/index.js', // Ensures correct public path for dynamic imports
+    publicPath: 'auto', // Ensures correct public path for dynamic imports
   },
   plugins: [
     new ModuleFederationPlugin({
