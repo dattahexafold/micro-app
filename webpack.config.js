@@ -11,9 +11,11 @@ module.exports = {
     },
     historyApiFallback: true, // Ensures that all routes fallback to index.html
     port: 3001,
+    hot: true, // Enables Hot Module Replacement
   },
   output: {
     publicPath: 'auto', // Ensures correct public path for dynamic imports
+    clean: true, // Clean the output directory before emitting files
   },
   plugins: [
     new ModuleFederationPlugin({
@@ -23,12 +25,12 @@ module.exports = {
         './App': './src/App', // Exposing the App component for use in the host
       },
       remotes: {
-        container: 'container@http://localhost:3000/remoteEntry.js', // URL to the container app
+        container: 'container@https://react-micro-frontend-app.vercel.app/remoteEntry.js', // URL to the container app
       },
       shared: {
-        react: { singleton: true },
-        "react-dom": { singleton: true },
-        "react-redux": { singleton: true },
+        react: { singleton: true, eager: true }, // Singleton and eager loading for React
+        "react-dom": { singleton: true, eager: true }, // Singleton and eager loading for React DOM
+        "react-redux": { singleton: true, eager: true }, // Singleton and eager loading for React Redux
       },
     }),
     new HtmlWebpackPlugin({
@@ -55,6 +57,10 @@ module.exports = {
       {
         test: /\.css$/i, // Process CSS files
         use: ['style-loader', 'css-loader'], // Loaders for handling CSS files
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/i, // Process image files
+        type: 'asset/resource', // Asset modules for handling images
       },
     ],
   },
